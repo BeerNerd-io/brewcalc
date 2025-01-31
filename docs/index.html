@@ -1,0 +1,408 @@
+<!-- Version 2024-01-24 -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Free online brewery calculator for homebrewers. Calculate ABV, IBU, SRM, gravity readings, and water chemistry. Create and save your beer recipes with Beer Nerd's easy-to-use brewing tools." />
+  <meta name="theme-color" content="#a9a42c" />
+
+  <!-- iOS installable PWA meta tags -->
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+  <title>Beer Nerd Brewery Calculator | Recipe Builder & Brewing Tools</title>
+
+  <!-- Favicon / Manifest -->
+  <link rel="icon" type="image/png" href="images/beernerd-icon-192.png" />
+  <link rel="manifest" href="manifest.json" />
+
+  <!-- Apple Icons (for iOS PWA) -->
+  <link rel="apple-touch-icon" href="images/beernerd-icon-192.png" />
+
+  <!-- Critical CSS (optional approach) or use an external style.css. -->
+  <link rel="stylesheet" href="assets/css/style.css" />
+
+</head>
+<body>
+  <header role="banner" class="header">
+    <a href="https://beernerd.io" class="home-button">
+      <img src="images/beernerd-logo.png" alt="Return to Beer Nerd Home" class="logo" />
+    </a>
+    <h1>Brewery Calculator</h1>
+  </header>
+
+  <!-- Add hero section -->
+  <section class="hero-section">
+    <div class="hero-container">
+      <img src="images/Beer Nerd Brewery Calculator Hero.png" alt="Beer Nerd Brewery Calculator" class="hero-image" />
+    </div>
+  </section>
+
+  <main role="main" class="main-content">
+    <!-- Calculator Section -->
+    <section id="calculators" aria-labelledby="calc-heading">
+      <h2 id="calc-heading">Brewing Calculations</h2>
+
+      <!-- ABV Calculator -->
+      <div class="calc-block">
+        <label for="og">Original Gravity (OG):</label>
+        <input type="number" step="0.001" id="og" required />
+      </div>
+
+      <div class="calc-block">
+        <label for="fg">Final Gravity (FG):</label>
+        <input type="number" step="0.001" id="fg" required />
+      </div>
+
+      <button id="abv-calc-btn" class="primary-btn">Calculate ABV</button>
+      <p id="abv-result" class="result-text" aria-live="polite"></p>
+      <!-- Additional calculators for IBU, SRM, etc. can go here. -->
+    </section>
+
+    <!-- Recipe Builder -->
+    <section id="recipe-builder" aria-labelledby="recipe-heading">
+      <h2 id="recipe-heading">Build Your Recipe</h2>
+      <form id="recipe-form" class="recipe-form" novalidate>
+        <label for="recipe-name">Recipe Name:</label>
+        <input type="text" id="recipe-name" required />
+
+        <label for="batch-size">Batch Size:</label>
+        <div class="input-group">
+          <input type="number" id="batch-size" required step="0.1" />
+          <span class="unit">gallons</span>
+        </div>
+
+        <h3>Grain Bill</h3>
+        <div id="grain-entries">
+          <div class="recipe-entry">
+            <div class="input-wrapper">
+              <label for="grain-type-0">Grain Type:</label>
+              <input type="text" 
+                class="grain-type" 
+                name="grain-type-0" 
+                id="grain-type-0" 
+                placeholder="Select grain type" 
+                list="grain-types" 
+                required />
+            </div>
+            <div class="input-group">
+              <label for="grain-amount-0">Amount:</label>
+              <input type="number" 
+                class="grain-amount" 
+                name="grain-amount-0" 
+                id="grain-amount-0" 
+                step="0.1" 
+                placeholder="Weight"
+                required />
+              <span class="unit">lbs</span>
+            </div>
+            <div class="grain-specs"></div>
+            <div class="entry-buttons">
+              <button type="button" class="add-entry-btn" title="Add new row">+</button>
+              <button type="button" class="remove-entry-btn" title="Remove row">×</button>
+            </div>
+          </div>
+        </div>
+
+        <h3>Hops Schedule</h3>
+        <div id="hops-entries">
+          <div class="recipe-entry">
+            <div class="input-wrapper">
+              <label for="hop-type-0">Hop Variety:</label>
+              <input type="text" 
+                class="hop-type" 
+                name="hop-type-0" 
+                id="hop-type-0" 
+                placeholder="Select hop variety" 
+                list="hop-types" 
+                required />
+            </div>
+            <div class="input-group">
+              <label for="hop-amount-0">Amount:</label>
+              <input type="number" 
+                class="hop-amount" 
+                name="hop-amount-0" 
+                id="hop-amount-0" 
+                step="0.1" 
+                placeholder="Weight"
+                required />
+              <span class="unit">oz</span>
+            </div>
+            <div class="input-group">
+              <label for="hop-time-0">Time:</label>
+              <input type="number" 
+                class="hop-time" 
+                name="hop-time-0" 
+                id="hop-time-0" 
+                placeholder="Boil time"
+                required />
+              <span class="unit">min</span>
+            </div>
+            <div class="hop-specs"></div>
+            <div class="entry-buttons">
+              <button type="button" class="add-entry-btn" title="Add new row">+</button>
+              <button type="button" class="remove-entry-btn" title="Remove row">×</button>
+            </div>
+          </div>
+        </div>
+
+        <h3>Yeast</h3>
+        <div class="recipe-entry">
+          <div class="input-wrapper">
+            <label for="yeast-strain">Yeast Strain:</label>
+            <input type="text" 
+              id="yeast-strain" 
+              name="yeast-strain" 
+              placeholder="Select yeast strain" 
+              list="yeast-types" />
+          </div>
+          <div class="input-group">
+            <label for="yeast-amount">Yeast Amount:</label>
+            <input type="number" 
+              id="yeast-amount" 
+              name="yeast-amount" 
+              step="1"
+              placeholder="Number of packs" />
+            <span class="unit">packs</span>
+          </div>
+        </div>
+
+        <h3>Mash & Water Chemistry</h3>
+        <div class="mash-water-section">
+          <div class="mash-details">
+            <h4>Mash Parameters</h4>
+            <div class="input-group">
+              <label for="mash-temp">Mash Temperature:</label>
+              <input type="number" 
+                id="mash-temp" 
+                name="mash-temp" 
+                step="0.1" 
+                placeholder="Enter mash temp" />
+              <span class="unit">°F</span>
+            </div>
+            <div class="input-group">
+              <label for="mash-thickness">Mash Thickness:</label>
+              <input type="number" 
+                id="mash-thickness" 
+                name="mash-thickness" 
+                step="0.1" 
+                placeholder="Qt/lb" />
+              <span class="unit">qt/lb</span>
+            </div>
+            <div class="input-group">
+              <label for="sparge-temp">Sparge Temperature:</label>
+              <input type="number" 
+                id="sparge-temp" 
+                name="sparge-temp" 
+                step="0.1" 
+                placeholder="Enter sparge temp" />
+              <span class="unit">°F</span>
+            </div>
+          </div>
+
+          <div class="water-chemistry">
+            <h4>Water Profile (ppm)</h4>
+            <div class="water-grid">
+              <div class="input-group">
+                <label for="calcium">Calcium (Ca<sup>2+</sup>):</label>
+                <input type="number" id="calcium" name="calcium" step="1" />
+                <span class="unit">ppm</span>
+              </div>
+              <div class="input-group">
+                <label for="magnesium">Magnesium (Mg<sup>2+</sup>):</label>
+                <input type="number" id="magnesium" name="magnesium" step="1" />
+                <span class="unit">ppm</span>
+              </div>
+              <div class="input-group">
+                <label for="sodium">Sodium (Na<sup>+</sup>):</label>
+                <input type="number" id="sodium" name="sodium" step="1" />
+                <span class="unit">ppm</span>
+              </div>
+              <div class="input-group">
+                <label for="chloride">Chloride (Cl<sup>-</sup>):</label>
+                <input type="number" id="chloride" name="chloride" step="1" />
+                <span class="unit">ppm</span>
+              </div>
+              <div class="input-group">
+                <label for="sulfate">Sulfate (SO<sub>4</sub><sup>2-</sup>):</label>
+                <input type="number" id="sulfate" name="sulfate" step="1" />
+                <span class="unit">ppm</span>
+              </div>
+              <div class="input-group">
+                <label for="bicarbonate">Bicarbonate (HCO<sub>3</sub><sup>-</sup>):</label>
+                <input type="number" id="bicarbonate" name="bicarbonate" step="1" />
+                <span class="unit">ppm</span>
+              </div>
+            </div>
+            
+            <div class="water-profile-presets">
+              <label for="water-preset">Water Profile Presets:</label>
+              <select id="water-preset" name="water-preset">
+                <option value="">Select a profile...</option>
+                <option value="pilsen">Pilsen</option>
+                <option value="munich">Munich</option>
+                <option value="burton">Burton on Trent</option>
+                <option value="dublin">Dublin</option>
+                <option value="london">London</option>
+                <option value="edinburgh">Edinburgh</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <label for="notes">Additional Notes:</label>
+        <textarea id="notes" placeholder="Mash schedule, fermentation notes, etc."></textarea>
+
+        <div class="recipe-stats">
+          <h3>Recipe Statistics</h3>
+          <div class="stats-grid">
+            <div class="stat-item">
+              <span class="stat-label">Original Gravity (OG):</span>
+              <span id="est-og-display" aria-live="polite">1.000</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Est. Final Gravity (FG):</span>
+              <span id="est-fg-display" aria-live="polite">1.000</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Est. ABV:</span>
+              <span id="est-abv-display" aria-live="polite">0.0%</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Est. IBU:</span>
+              <span id="est-ibu-display" aria-live="polite">0.0</span>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Est. Color (SRM):</span>
+              <span id="est-srm-display" aria-live="polite">0.0</span>
+              <div id="color-preview" class="color-preview" aria-label="Color preview"></div>
+            </div>
+            <div class="stat-item">
+              <span class="stat-label">Est. Efficiency:</span>
+              <span id="est-efficiency-display" aria-live="polite">75%</span>
+            </div>
+          </div>
+        </div>
+
+        <button type="submit" id="save-recipe-btn" class="primary-btn">Save Recipe</button>
+      </form>
+    </section>
+
+    <!-- PDF & Share Buttons -->
+    <div class="button-group">
+      <button id="generate-pdf-btn" class="secondary-btn">Generate PDF</button>
+      <button id="share-btn" class="secondary-btn">Share Recipe</button>
+    </div>
+
+    <!-- Saved Recipes Section -->
+    <section id="saved-recipes" aria-labelledby="saved-recipes-heading">
+      <h2 id="saved-recipes-heading">Saved Recipes</h2>
+      <div class="storage-disclaimer">
+        <p>⚠️ Your recipes are stored in your browser's local storage. Clearing your browser cache will delete all saved recipes. We recommend exporting important recipes to keep them safe.</p>
+      </div>
+      <div class="saved-recipes-controls">
+        <button id="export-all-btn" class="secondary-btn">Export All Recipes</button>
+        <button id="import-recipes-btn" class="secondary-btn">Import Recipes</button>
+        <input type="file" id="import-file" accept=".json" style="display: none;">
+        <button id="delete-all-btn" class="delete-btn">Delete All</button>
+      </div>
+      <div class="saved-recipes-list"></div>
+    </section>
+
+    <!-- Message / Notifications -->
+    <div id="message" class="message" aria-live="polite"></div>
+  </main>
+
+  <footer role="contentinfo" class="footer">
+    <div class="footer-content">
+      <p>The Beer Nerd Brewery Calculator is free to use. Please report any bugs or inquiries to <a href="mailto:info@beernerd.io">info@beernerd.io</a></p>
+      <a href="https://beernerd.io" class="return-home">Return to Beer Nerd</a>
+    </div>
+    <p class="copyright">© 2024 Beer Nerd (beernerd.io). All rights reserved.</p>
+  </footer>
+
+  <!-- JS Libraries -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+  <!-- Main App JS -->
+  <script src="js/app.js" defer></script>
+
+  <!-- Add before closing body tag -->
+  <datalist id="grain-types">
+    <option value="Pale Malt (2 Row)">
+    <option value="Pilsner Malt">
+    <option value="Vienna Malt">
+    <option value="Munich Malt">
+    <option value="Crystal 20L">
+    <option value="Crystal 40L">
+    <option value="Crystal 60L">
+    <option value="Crystal 120L">
+    <option value="Chocolate Malt">
+    <option value="Roasted Barley">
+    <option value="Black Patent">
+    <option value="Wheat Malt">
+    <option value="Oat Malt">
+    <option value="Other...">
+  </datalist>
+
+  <datalist id="hop-types">
+    <option value="Cascade">
+    <option value="Centennial">
+    <option value="Citra">
+    <option value="Chinook">
+    <option value="Fuggle">
+    <option value="Golding">
+    <option value="Hallertau">
+    <option value="Magnum">
+    <option value="Mosaic">
+    <option value="Northern Brewer">
+    <option value="Saaz">
+    <option value="Simcoe">
+    <option value="Tettnang">
+    <option value="Other...">
+  </datalist>
+
+  <!-- Add yeast datalist -->
+  <datalist id="yeast-types">
+    <option value="Safale US-05">
+    <option value="Safale S-04">
+    <option value="Wyeast 1056">
+    <option value="Wyeast 1272">
+    <option value="WLP001">
+    <option value="WLP002">
+    <option value="Other...">
+  </datalist>
+
+  <!-- Modal for custom specs -->
+  <div id="custom-spec-modal" class="modal">
+    <div class="modal-content">
+      <span class="close-modal" aria-label="Close modal">&times;</span>
+      <h3>Enter Custom Specifications</h3>
+      <form id="custom-spec-form">
+        <div id="grain-specs-inputs" style="display: none;">
+          <div class="form-group">
+            <label for="custom-grain-ppg">Points Per Gallon (PPG):</label>
+            <input type="number" id="custom-grain-ppg" name="custom-grain-ppg" step="0.1" required>
+          </div>
+          <div class="form-group">
+            <label for="custom-grain-color">Color (°L):</label>
+            <input type="number" id="custom-grain-color" name="custom-grain-color" step="0.1" required>
+          </div>
+        </div>
+        <div id="hop-specs-inputs" style="display: none;">
+          <div class="form-group">
+            <label for="custom-hop-alpha">Alpha Acid %:</label>
+            <input type="number" id="custom-hop-alpha" name="custom-hop-alpha" step="0.1" required>
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="custom-ingredient-name">Custom Name:</label>
+          <input type="text" id="custom-ingredient-name" name="custom-ingredient-name" required>
+        </div>
+        <button type="submit" class="primary-btn">Add Custom Item</button>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

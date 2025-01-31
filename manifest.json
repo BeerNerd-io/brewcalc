@@ -1,0 +1,22 @@
+{
+    "name": "Beer Nerd Brewing Calculator",
+    "short_name": "BeerNerdCalc",
+    "start_url": ".",
+    "display": "standalone",
+    "background_color": "#1c1c1c",
+    "theme_color": "#a9a42c",
+    "description": "A slick offline brewing calculator for Beer Nerd enthusiasts.",
+    "icons": [
+      {
+        "src": "images/beernerd-icon-192.png",
+        "type": "image/png",
+        "sizes": "192x192"
+      },
+      {
+        "src": "images/beernerd-icon-512.png",
+        "type": "image/png",
+        "sizes": "512x512"
+      }
+    ]
+  }
+  
